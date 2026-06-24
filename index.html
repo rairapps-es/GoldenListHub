@@ -163,14 +163,14 @@
         </div>
         
         <div class="md:hidden flex justify-around bg-[#17212b] border-t border-white/5 py-2">
-            <button onclick="switchTab('catalogo')" id="btn-mob-catalogo" class="flex flex-col items-center gap-1 text-[#2481cc] text-xs">
+            <button onclick="switchTab('catalogo')" id="btn-mob-catalogo" class="flex flex-col items-center gap-1 text-[#2481cc] text-xs cursor-pointer">
                 <i data-lucide="grid" class="w-5 h-5"></i> Catálogo
             </button>
-            <button onclick="switchTab('favoritos')" id="btn-mob-favoritos" class="flex flex-col items-center gap-1 text-slate-400 text-xs relative">
+            <button onclick="switchTab('favoritos')" id="btn-mob-favoritos" class="flex flex-col items-center gap-1 text-slate-400 text-xs relative cursor-pointer">
                 <i data-lucide="heart" class="w-5 h-5"></i> Favoritos
                 <span id="fav-badge-mob" class="absolute top-0 right-2 bg-rose-500 text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-full hidden">0</span>
             </button>
-            <button onclick="switchTab('perfil')" id="btn-mob-perfil" class="only-seller flex flex-col items-center gap-1 text-slate-400 text-xs">
+            <button onclick="switchTab('perfil')" id="btn-mob-perfil" class="only-seller flex flex-col items-center gap-1 text-slate-400 text-xs cursor-pointer">
                 <i data-lucide="user" class="w-5 h-5"></i> Perfil
             </button>
         </div>
@@ -1059,6 +1059,9 @@
             return div;
         }
 
+        // ==========================================
+        // GESTIÓN DE EXPANSIONES DE TARJETAS
+        // ==========================================
         function toggleExpandCard(idCompleto) {
             const panel = document.getElementById(`extra-${idCompleto}`);
             const arrow = document.getElementById(`arrow-${idCompleto}`);
@@ -1192,7 +1195,7 @@
         }
 
         // ==========================================
-        // CAMBIO DE PESTAÑAS (NAVEGACIÓN)
+        // CAMBIO DE PESTAÑAS (NAVEGACIÓN MULTIPESTAÑA NUEVA)
         // ==========================================
         function switchTab(tab) {
             // Protección de Modos de Vista: Si está en modo explorador e intenta ingresar a perfil, se bloquea.
@@ -1203,6 +1206,17 @@
 
             currentActiveTab = tab;
             const tabs = ['catalogo', 'favoritos', 'perfil'];
+            
+            // Ocultar o mostrar dinámicamente los sliders promocionales solo en el catálogo
+            const slidersSection = document.getElementById('premium-sliders-section');
+            if (slidersSection) {
+                if (tab === 'catalogo') {
+                    slidersSection.classList.remove('hidden');
+                } else {
+                    slidersSection.classList.add('hidden');
+                }
+            }
+
             tabs.forEach(t => {
                 const section = document.getElementById(`view-${t}`);
                 if (section) section.classList.add('hidden');
@@ -1210,7 +1224,7 @@
                 const btnNav = document.getElementById(`btn-nav-${t}`);
                 const btnMob = document.getElementById(`btn-mob-${t}`);
                 if(btnNav) btnNav.className = "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2 text-slate-400 hover:text-white cursor-pointer";
-                if(btnMob) btnMob.className = "flex flex-col items-center gap-1 text-slate-400 text-xs";
+                if(btnMob) btnMob.className = "flex flex-col items-center gap-1 text-slate-400 text-xs cursor-pointer";
             });
 
             const activeSection = document.getElementById(`view-${tab}`);
@@ -1219,7 +1233,7 @@
             const activeNav = document.getElementById(`btn-nav-${tab}`);
             const activeMob = document.getElementById(`btn-mob-${tab}`);
             if(activeNav) activeNav.className = "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2 bg-[#2481cc] text-white cursor-pointer";
-            if(activeMob) activeMob.className = "flex flex-col items-center gap-1 text-[#2481cc] text-xs";
+            if(activeMob) activeMob.className = "flex flex-col items-center gap-1 text-[#2481cc] text-xs cursor-pointer";
 
             if (tab === 'catalogo') { catalogoPage = 1; renderCatalogo(); }
             if (tab === 'favoritos') { favoritosPage = 1; renderFavoritos(); }
