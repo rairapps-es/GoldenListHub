@@ -58,11 +58,11 @@
         }
     </style>
 </head>
-<body class="bg-[#0e1621] text-[#f5f5f5] font-sans min-h-screen flex flex-col selection:bg-[#2481cc] selection:text-white">
+<body class="bg-[#0e1621] text-[#f5f5f5] font-sans min-h-screen flex flex-col selection:bg-[#2481cc] selection:text-white pb-20 md:pb-0">
 
     <div id="rair-golden-alert" class="fixed top-4 left-1/2 -translate-x-1/2 z-[100] max-w-md w-[90%] glass p-3 rounded-xl shadow-2xl border border-yellow-500/30 flex items-center gap-3 transition-all duration-500 transform -translate-y-32 opacity-0">
         <div class="relative shrink-0">
-            <img id="alert-avatar" src="" class="w-10 h-10 rounded-full border border-yellow-500 object-cover">
+            <img id="alert-avatar" src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=150&h=150&q=80" class="w-10 h-10 rounded-full border border-yellow-500 object-cover">
             <div class="absolute -bottom-1 -right-1 bg-yellow-500 rounded-full p-0.5 text-slate-950">
                 <i data-lucide="bell" class="w-2.5 h-2.5 fill-current"></i>
             </div>
@@ -97,7 +97,7 @@
         <div class="max-w-4xl w-full glass rounded-2xl max-h-[85vh] flex flex-col shadow-2xl transform scale-95 transition-all duration-300">
             <div class="p-4 border-b border-white/5 flex items-center justify-between bg-[#17212b]">
                 <div class="flex items-center gap-2">
-                    <img id="modal-seller-avatar" src="" class="w-8 h-8 rounded-full border object-cover border-slate-600">
+                    <img id="modal-seller-avatar" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&h=150&q=80" class="w-8 h-8 rounded-full border object-cover border-slate-600">
                     <div>
                         <h3 id="modal-seller-title" class="font-bold text-sm text-white">Servicios de @usuario</h3>
                         <p class="text-[10px] text-slate-400">Catálogo verificado del vendedor</p>
@@ -107,8 +107,7 @@
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
-            <div id="modal-seller-grid" class="p-6 overflow-y-auto grid grid-cols-1 md:grid-cols-2 gap-6 bg-[#0e1621]/50">
-                </div>
+            <div id="modal-seller-grid" class="p-6 overflow-y-auto grid grid-cols-1 md:grid-cols-2 gap-6 bg-[#0e1621]/50"></div>
         </div>
     </div>
 
@@ -131,7 +130,7 @@
             </div>
 
             <nav class="hidden md:flex items-center gap-1 bg-[#17212b] p-1 rounded-xl border border-white/5">
-                <button onclick="switchTab('catalogo')" id="btn-nav-catalogo" class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2 text-white cursor-pointer">
+                <button onclick="switchTab('catalogo')" id="btn-nav-catalogo" class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2 text-white cursor-pointer bg-[#2481cc]">
                     <i data-lucide="grid" class="w-4 h-4"></i> Catálogo
                 </button>
                 <button onclick="switchTab('favoritos')" id="btn-nav-favoritos" class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2 text-slate-400 hover:text-white cursor-pointer">
@@ -144,36 +143,23 @@
             </nav>
 
             <div class="flex items-center gap-3 cursor-pointer shrink-0" onclick="if(currentViewMode === 'VENDEDOR') switchTab('perfil')">
-                <div class="text-right hidden sm:flex flex-col items-end">
+                <div class="text-right flex flex-col items-end">
                     <div class="font-semibold text-sm flex items-center gap-1">
                         <span class="text-slate-400 text-xs font-normal">Hola,</span>
                         <span id="user-display-name">...</span>
                         <span id="user-display-id" class="text-[10px] text-slate-500 font-mono"></span>
                     </div>
-                    <div class="flex gap-2 mt-1 text-[10px] text-slate-400">
-                        <span class="flex items-center gap-0.5"><i data-lucide="package" class="w-2.5 h-2.5 text-[#2481cc]"></i>Pub: <b id="count-pub" class="text-white">0</b></span>
-                        <span class="flex items-center gap-0.5"><i data-lucide="heart" class="w-2.5 h-2.5 text-rose-500"></i>Fav: <b id="count-fav" class="text-white">0</b></span>
+                    <div id="header-counters" class="flex gap-2 mt-1 text-[10px] text-slate-400">
+                        <span id="header-pub-wrapper" class="flex items-center gap-0.5"><i data-lucide="package" class="w-2.5 h-2.5 text-[#2481cc]"></i>Pub: <b id="count-pub" class="text-white">0</b></span>
+                        <span id="header-fav-wrapper" class="flex items-center gap-0.5"><i data-lucide="heart" class="w-2.5 h-2.5 text-rose-500"></i>Fav: <b id="count-fav" class="text-white">0</b></span>
                     </div>
                 </div>
                 <div class="relative pb-2">
-                    <img id="user-avatar" src="" alt="Avatar" class="w-11 h-11 rounded-full border-2 object-cover shadow-md border-slate-700">
+                    <img id="user-avatar" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&h=150&q=80" alt="Avatar" class="w-11 h-11 rounded-full border-2 object-cover shadow-md border-slate-700">
                     <div class="absolute bottom-2 right-0 w-3 h-3 bg-emerald-500 rounded-full border-2 border-[#0e1621]"></div>
                     <span id="plan-badge" class="absolute -bottom-1 left-1/2 -translate-x-1/2 text-[8px] font-extrabold px-1.5 py-0.5 rounded shadow-md text-center tracking-tight whitespace-nowrap uppercase z-10">...</span>
                 </div>
             </div>
-        </div>
-        
-        <div class="md:hidden flex justify-around bg-[#17212b] border-t border-white/5 py-2">
-            <button onclick="switchTab('catalogo')" id="btn-mob-catalogo" class="flex flex-col items-center gap-1 text-[#2481cc] text-xs">
-                <i data-lucide="grid" class="w-5 h-5"></i> Catálogo
-            </button>
-            <button onclick="switchTab('favoritos')" id="btn-mob-favoritos" class="flex flex-col items-center gap-1 text-slate-400 text-xs relative">
-                <i data-lucide="heart" class="w-5 h-5"></i> Favoritos
-                <span id="fav-badge-mob" class="absolute top-0 right-2 bg-rose-500 text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-full hidden">0</span>
-            </button>
-            <button onclick="switchTab('perfil')" id="btn-mob-perfil" class="only-seller flex flex-col items-center gap-1 text-slate-400 text-xs">
-                <i data-lucide="user" class="w-5 h-5"></i> Perfil
-            </button>
         </div>
     </header>
 
@@ -198,8 +184,7 @@
                         <button onclick="scrollSlider('slider-sellers', 'right')" class="p-1.5 rounded-lg bg-[#17212b] hover:bg-slate-800 border border-white/5 cursor-pointer"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
                     </div>
                 </div>
-                <div id="slider-sellers" class="flex gap-4 overflow-x-auto no-scrollbar scroll-smooth pb-2">
-                    </div>
+                <div id="slider-sellers" class="flex gap-4 overflow-x-auto no-scrollbar scroll-smooth pb-2"></div>
             </div>
 
             <div class="space-y-3">
@@ -212,8 +197,7 @@
                         <button onclick="scrollSlider('slider-featured', 'right')" class="p-1.5 rounded-lg bg-[#17212b] hover:bg-slate-800 border border-white/5 cursor-pointer"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
                     </div>
                 </div>
-                <div id="slider-featured" class="flex gap-6 overflow-x-auto no-scrollbar scroll-smooth pb-4 pt-1 snap-x">
-                    </div>
+                <div id="slider-featured" class="flex gap-6 overflow-x-auto no-scrollbar scroll-smooth pb-4 pt-1 snap-x"></div>
             </div>
 
             <div class="space-y-3">
@@ -226,8 +210,7 @@
                         <button onclick="scrollSlider('slider-random', 'right')" class="p-1.5 rounded-lg bg-[#17212b] hover:bg-slate-800 border border-white/5 cursor-pointer"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
                     </div>
                 </div>
-                <div id="slider-random" class="flex gap-6 overflow-x-auto no-scrollbar scroll-smooth pb-4 pt-1 snap-x">
-                    </div>
+                <div id="slider-random" class="flex gap-6 overflow-x-auto no-scrollbar scroll-smooth pb-4 pt-1 snap-x"></div>
             </div>
         </section>
 
@@ -256,7 +239,7 @@
                         <i data-lucide="flame" class="w-3.5 h-3.5 text-amber-500"></i> Populares
                     </button>
                     <button onclick="toggleFilter('destacado')" id="filter-destacado" class="px-3 py-1.5 bg-[#17212b] hover:bg-slate-800 border border-white/5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 text-slate-300">
-                        <i data-lucide="award" class="w-3.5 h-3.5 text-yellow-400"></i> Destacados
+                        <i data-lucide="award" class="w-3.5 h-3.5 text-yellow-400"></i> Destados
                     </button>
                     <button onclick="toggleFilter('oferta')" id="filter-oferta" class="px-3 py-1.5 bg-[#17212b] hover:bg-slate-800 border border-white/5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 text-slate-300">
                         <i data-lucide="percent" class="w-3.5 h-3.5 text-emerald-400"></i> En Oferta
@@ -305,12 +288,12 @@
             </div>
         </section>
 
-        <section id="view-perfil" class="space-y-8 hidden only-seller-view">
+        <section id="view-perfil" class="space-y-8 hidden">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div class="glass p-6 rounded-2xl h-fit space-y-6 border border-white/10">
                     <div class="flex flex-col items-center text-center">
                         <div class="relative mb-3">
-                            <img id="profile-card-avatar" src="" alt="Avatar" class="w-24 h-24 rounded-full object-cover border-4 border-[#2481cc] shadow-xl">
+                            <img id="profile-card-avatar" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&h=150&q=80" alt="Avatar" class="w-24 h-24 rounded-full object-cover border-4 border-[#2481cc] shadow-xl">
                             <span id="profile-card-badge-verify" class="absolute bottom-0 right-1 bg-[#2481cc] p-1.5 rounded-full text-white border-2 border-[#17212b] hidden">
                                 <i data-lucide="check-circle-2" class="w-4 h-4 fill-white text-[#2481cc]"></i>
                             </span>
@@ -358,7 +341,20 @@
         </section>
     </main>
 
-    <div id="toast-container" class="fixed bottom-20 right-4 z-[200] flex flex-col gap-2 pointer-events-none max-w-sm w-full"></div>
+    <div class="md:hidden fixed bottom-0 left-0 w-full bg-[#17212b] border-t border-white/5 py-2 flex justify-around z-50 shadow-2xl backdrop-blur-md">
+        <button onclick="switchTab('catalogo')" id="btn-mob-catalogo" class="flex flex-col items-center gap-1 text-[#2481cc] text-xs cursor-pointer">
+            <i data-lucide="grid" class="w-5 h-5"></i> Catálogo
+        </button>
+        <button onclick="switchTab('favoritos')" id="btn-mob-favoritos" class="flex flex-col items-center gap-1 text-slate-400 text-xs relative cursor-pointer">
+            <i data-lucide="heart" class="w-5 h-5"></i> Favoritos
+            <span id="fav-badge-mob" class="absolute top-0 right-2 bg-rose-500 text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-full hidden">0</span>
+        </button>
+        <button onclick="switchTab('perfil')" id="btn-mob-perfil" class="only-seller flex flex-col items-center gap-1 text-slate-400 text-xs cursor-pointer">
+            <i data-lucide="user" class="w-5 h-5"></i> Perfil
+        </button>
+    </div>
+
+    <div id="toast-container" class="fixed bottom-24 right-4 z-[200] flex flex-col gap-2 pointer-events-none max-w-sm w-full"></div>
 
     <script>
         // ==========================================
@@ -532,28 +528,30 @@
             
             const btnExp = document.getElementById('view-mode-explorador');
             const btnVend = document.getElementById('view-mode-vendedor');
+            const pubWrapper = document.getElementById('header-pub-wrapper');
             
             if(mode === 'EXPLORADOR') {
-                btnExp.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-[#2481cc] text-white";
-                btnVend.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-400 hover:text-white";
+                btnExp.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-[#2481cc] text-white cursor-pointer";
+                btnVend.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-400 hover:text-white cursor-pointer";
                 
-                // Ocultar elementos exclusivos de navegación/pestañas de vendedor, pero no el perfil del header
-                document.querySelectorAll('nav .only-seller, .md\\:hidden .only-seller').forEach(el => el.classList.add('hidden'));
+                // Ocultar elementos exclusivos de vendedor en navegación superior e inferior
+                document.querySelectorAll('nav .only-seller, .fixed .only-seller').forEach(el => el.classList.add('hidden'));
+                if (pubWrapper) pubWrapper.classList.add('hidden'); // Ocultar contador de publicados en modo explorador
                 
-                // Si estaba en la pestaña de perfil, forzar regreso al catálogo
                 if(currentActiveTab === 'perfil') {
                     switchTab('catalogo');
                 }
             } else {
-                btnExp.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-400 hover:text-white";
-                btnVend.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-[#2481cc] text-white";
+                btnExp.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-400 hover:text-white cursor-pointer";
+                btnVend.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-[#2481cc] text-white cursor-pointer";
                 
                 document.querySelectorAll('.only-seller').forEach(el => el.classList.remove('hidden'));
+                if (pubWrapper) pubWrapper.classList.remove('hidden'); // Mostrar contador de publicados en modo vendedor
             }
             
-            // Re-renderizar catálogo para actualizar botones internos de las tarjetas si aplica
             resetAndRender();
             renderSliders();
+            syncUserProfile();
         }
 
         // ==========================================
@@ -685,8 +683,6 @@
             document.getElementById('alert-text').textContent = randomMsg;
 
             alertBox.classList.remove('-translate-y-32', 'opacity-0');
-            
-            // Cierre automático estándar a los 8 segundos
             setTimeout(closeRairAlert, 8000);
         }
 
@@ -708,7 +704,6 @@
             const container = document.getElementById('sponsor-card-container');
             container.innerHTML = "";
             
-            // Genera la tarjeta completa exacta con ID único independiente
             const card = createServiceCard(targetService, false, `sponsor-popup-${targetService.id_servicio}`);
             container.appendChild(card);
 
@@ -726,7 +721,6 @@
             let timeLeft = 15;
             timerText.textContent = `${timeLeft}s`;
 
-            // Ejecutar animación de barra de carga
             setTimeout(() => {
                 progressBar.style.transition = 'width 15s linear';
                 progressBar.style.width = '0%';
@@ -837,7 +831,6 @@
                 gridMisAnuncios.innerHTML = `<div class="col-span-full text-center text-slate-500 py-6 text-sm">No tienes anuncios publicados actualmente.</div>`;
             } else {
                 misAnuncios.forEach(srv => {
-                    // Fuerza panel de control propio con botones de edición
                     const card = createServiceCard(srv, true, `my-panel-${srv.id_servicio}`);
                     gridMisAnuncios.appendChild(card);
                 });
@@ -955,7 +948,6 @@
             const isFav = favoritos.includes(srv.id_servicio);
             const tieneOferta = srv.Precio_oferta && srv.Precio_oferta !== "";
 
-            // Ocultar de manera definitiva los botones de edición si se pulsa "Modo Explorador" globalmente
             const renderizarBotonesEdicion = esPanelDeControlPropio && currentViewMode === "VENDEDOR";
 
             div.innerHTML = `
@@ -1200,7 +1192,6 @@
         // CAMBIO DE PESTAÑAS (NAVEGACIÓN)
         // ==========================================
         function switchTab(tab) {
-            // Protección de Modos de Vista: Si está en modo explorador e intenta ingresar a perfil, se bloquea.
             if(currentViewMode === "EXPLORADOR" && tab === "perfil") {
                 showToast("Acceso denegado. Activa el 'Modo Vendedor' para ver tu panel de control.", "warning");
                 return;
@@ -1215,7 +1206,7 @@
                 const btnNav = document.getElementById(`btn-nav-${t}`);
                 const btnMob = document.getElementById(`btn-mob-${t}`);
                 if(btnNav) btnNav.className = "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2 text-slate-400 hover:text-white cursor-pointer";
-                if(btnMob) btnMob.className = "flex flex-col items-center gap-1 text-slate-400 text-xs";
+                if(btnMob) btnMob.className = "flex flex-col items-center gap-1 text-slate-400 text-xs cursor-pointer";
             });
 
             const activeSection = document.getElementById(`view-${tab}`);
@@ -1224,7 +1215,7 @@
             const activeNav = document.getElementById(`btn-nav-${tab}`);
             const activeMob = document.getElementById(`btn-mob-${tab}`);
             if(activeNav) activeNav.className = "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2 bg-[#2481cc] text-white cursor-pointer";
-            if(activeMob) activeMob.className = "flex flex-col items-center gap-1 text-[#2481cc] text-xs";
+            if(activeMob) activeMob.className = "flex flex-col items-center gap-1 text-[#2481cc] text-xs cursor-pointer";
 
             if (tab === 'catalogo') { catalogoPage = 1; renderCatalogo(); }
             if (tab === 'favoritos') { favoritosPage = 1; renderFavoritos(); }
