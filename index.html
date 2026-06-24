@@ -148,29 +148,30 @@
                     <div class="font-semibold text-sm flex items-center gap-1">
                         <span class="text-slate-400 text-xs font-normal">Hola,</span>
                         <span id="user-display-name">...</span>
+                        <span id="user-display-id" class="text-[10px] text-slate-500 font-mono"></span>
                     </div>
-                    <span id="plan-badge" class="text-[9px] font-bold px-2 py-0.5 mt-0.5 rounded-md tracking-wider shadow-sm text-center">CARGANDO...</span>
                     <div class="flex gap-2 mt-1 text-[10px] text-slate-400">
                         <span class="flex items-center gap-0.5"><i data-lucide="package" class="w-2.5 h-2.5 text-[#2481cc]"></i>Pub: <b id="count-pub" class="text-white">0</b></span>
                         <span class="flex items-center gap-0.5"><i data-lucide="heart" class="w-2.5 h-2.5 text-rose-500"></i>Fav: <b id="count-fav" class="text-white">0</b></span>
                     </div>
                 </div>
-                <div class="relative">
+                <div class="relative pb-2">
                     <img id="user-avatar" src="" alt="Avatar" class="w-11 h-11 rounded-full border-2 object-cover shadow-md border-slate-700">
-                    <div class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 rounded-full border-2 border-[#0e1621]"></div>
+                    <div class="absolute bottom-2 right-0 w-3 h-3 bg-emerald-500 rounded-full border-2 border-[#0e1621]"></div>
+                    <span id="plan-badge" class="absolute -bottom-1 left-1/2 -translate-x-1/2 text-[8px] font-extrabold px-1.5 py-0.5 rounded shadow-md text-center tracking-tight whitespace-nowrap uppercase z-10">...</span>
                 </div>
             </div>
         </div>
         
         <div class="md:hidden flex justify-around bg-[#17212b] border-t border-white/5 py-2">
-            <button onclick="switchTab('catalogo')" id="btn-mob-catalogo" class="flex flex-col items-center gap-1 text-[#2481cc] text-xs cursor-pointer">
+            <button onclick="switchTab('catalogo')" id="btn-mob-catalogo" class="flex flex-col items-center gap-1 text-[#2481cc] text-xs">
                 <i data-lucide="grid" class="w-5 h-5"></i> Catálogo
             </button>
-            <button onclick="switchTab('favoritos')" id="btn-mob-favoritos" class="flex flex-col items-center gap-1 text-slate-400 text-xs relative cursor-pointer">
+            <button onclick="switchTab('favoritos')" id="btn-mob-favoritos" class="flex flex-col items-center gap-1 text-slate-400 text-xs relative">
                 <i data-lucide="heart" class="w-5 h-5"></i> Favoritos
                 <span id="fav-badge-mob" class="absolute top-0 right-2 bg-rose-500 text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-full hidden">0</span>
             </button>
-            <button onclick="switchTab('perfil')" id="btn-mob-perfil" class="only-seller flex flex-col items-center gap-1 text-slate-400 text-xs cursor-pointer">
+            <button onclick="switchTab('perfil')" id="btn-mob-perfil" class="only-seller flex flex-col items-center gap-1 text-slate-400 text-xs">
                 <i data-lucide="user" class="w-5 h-5"></i> Perfil
             </button>
         </div>
@@ -278,7 +279,7 @@
 
             <div class="flex justify-center pt-4">
                 <button id="btn-lazy-catalogo" onclick="loadMoreCatalogo()" class="px-6 py-3 bg-[#17212b] hover:bg-[#2481cc] text-white text-sm font-semibold rounded-xl border border-white/5 transition-all duration-300 shadow-md flex items-center gap-2 group cursor-pointer">
-                    <span>Mostrar más servicios</span>
+                    <span>Mostrar más canales</span>
                     <i data-lucide="chevron-down" class="w-4 h-4 group-hover:translate-y-0.5 transition-transform"></i>
                 </button>
             </div>
@@ -365,7 +366,7 @@
         // ==========================================
         const DEFAULT_USERS_DB = [
             {
-                id_user: "1320417199",
+                id_user: "1562279292",
                 username: "Airdayz",
                 photo_url: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&h=150&q=80",
                 plan: "PRO",
@@ -389,7 +390,7 @@
         const DEFAULT_SERVICES_DB = [
             {
                 id_servicio: "618192",
-                id_user: "1320417199",
+                id_user: "1562279292",
                 vendedor: "Airdayz",
                 título: "Canción personalizada por IA",
                 url_img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80",
@@ -417,7 +418,7 @@
             },
             {
                 id_servicio: "721943",
-                id_user: "1320417199",
+                id_user: "1562279292",
                 vendedor: "Airdayz",
                 título: "Creación de Avatares Hiperrealistas",
                 url_img: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=800&q=80",
@@ -475,7 +476,7 @@
 
         // CONFIGURACIONES DEL PERSONAJE Y PATROCINIOS MANUALES
         const RAIR_GOLDEN_PROFILE = {
-            id: "1320417199",
+            id: "555123456",
             name: "Rair Golden",
             photo_url: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=150&h=150&q=80"
         };
@@ -536,8 +537,8 @@
                 btnExp.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-[#2481cc] text-white";
                 btnVend.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-400 hover:text-white";
                 
-                // Ocultar elementos exclusivos de vendedor
-                document.querySelectorAll('.only-seller').forEach(el => el.classList.add('hidden'));
+                // Ocultar elementos exclusivos de navegación/pestañas de vendedor, pero no el perfil del header
+                document.querySelectorAll('nav .only-seller, .md\\:hidden .only-seller').forEach(el => el.classList.add('hidden'));
                 
                 // Si estaba en la pestaña de perfil, forzar regreso al catálogo
                 if(currentActiveTab === 'perfil') {
@@ -551,7 +552,7 @@
             }
             
             // Re-renderizar catálogo para actualizar botones internos de las tarjetas si aplica
-            renderCatalogo();
+            resetAndRender();
             renderSliders();
         }
 
@@ -753,15 +754,16 @@
         // GESTIÓN INTEGRAL DE DATOS DEL USUARIO
         // ==========================================
         function syncUserProfile() {
-            const users = JSON.parse(localStorage.getItem('users_db'));
-            const srvs = JSON.parse(localStorage.getItem('services_db'));
-            const favs = JSON.parse(localStorage.getItem('favoritos_db'));
+            const users = JSON.parse(localStorage.getItem('users_db')) || DEFAULT_USERS_DB;
+            const srvs = JSON.parse(localStorage.getItem('services_db')) || DEFAULT_SERVICES_DB;
+            const favs = JSON.parse(localStorage.getItem('favoritos_db')) || [];
             
             const currentUser = users.find(u => u.id_user === CURRENT_TELEGRAM_USER_ID);
             
             const badge = document.getElementById('plan-badge');
             const avatar = document.getElementById('user-avatar');
             const displayName = document.getElementById('user-display-name');
+            const displayId = document.getElementById('user-display-id');
 
             const misAnunciosCount = srvs.filter(s => s.id_user === CURRENT_TELEGRAM_USER_ID).length;
             document.getElementById('count-pub').textContent = misAnunciosCount;
@@ -769,22 +771,23 @@
 
             if (currentUser) {
                 displayName.textContent = `@${currentUser.username}`;
+                if (displayId) displayId.textContent = `(ID: ${currentUser.id_user})`;
                 avatar.src = currentUser.photo_url;
                 
                 if (currentUser.plan === "PRO" && currentUser.Estado === "ACTIVADO") {
-                    badge.textContent = "PLAN PRO";
-                    badge.className = "text-[9px] font-extrabold px-2 py-0.5 rounded-md bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-900 tracking-wider shadow-sm font-sans";
+                    badge.textContent = "PRO";
+                    badge.className = "absolute -bottom-1 left-1/2 -translate-x-1/2 text-[8px] font-extrabold px-1.5 py-0.5 rounded shadow-md text-center tracking-tight whitespace-nowrap bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-900 border border-amber-400/30 z-10 font-sans animate-pulse";
                 } else {
-                    badge.textContent = "PLAN GRATIS";
-                    badge.className = "text-[9px] font-bold px-2 py-0.5 rounded-md bg-slate-700 text-slate-300 tracking-wider shadow-sm font-sans";
+                    badge.textContent = "GRATIS";
+                    badge.className = "absolute -bottom-1 left-1/2 -translate-x-1/2 text-[8px] font-bold px-1.5 py-0.5 rounded shadow-md text-center tracking-tight whitespace-nowrap bg-slate-700 text-slate-300 z-10 font-sans";
                 }
             }
             updateFavBadges();
         }
 
         function renderPanelPerfil() {
-            const users = JSON.parse(localStorage.getItem('users_db'));
-            const srvs = JSON.parse(localStorage.getItem('services_db'));
+            const users = JSON.parse(localStorage.getItem('users_db')) || DEFAULT_USERS_DB;
+            const srvs = JSON.parse(localStorage.getItem('services_db')) || DEFAULT_SERVICES_DB;
             const user = users.find(u => u.id_user === CURRENT_TELEGRAM_USER_ID);
             if (!user) return;
 
@@ -815,7 +818,7 @@
                     <div class="p-3 bg-slate-800/40 rounded-xl border border-white/5 flex gap-3"><i data-lucide="check-circle" class="text-emerald-400 shrink-0"></i><div><h4 class="text-sm font-semibold">Anuncios Permitidos</h4><p class="text-xs text-slate-400">Hasta 3 anuncios simultáneos en catálogo.</p></div></div>
                     <div class="p-3 bg-slate-800/40 rounded-xl border border-white/5 flex gap-3"><i data-lucide="check-circle" class="text-emerald-400 shrink-0"></i><div><h4 class="text-sm font-semibold">Selección de Categorías</h4><p class="text-xs text-slate-400">Elige hasta 7 categorías por servicio.</p></div></div>
                     <div class="p-3 bg-slate-800/40 rounded-xl border border-white/5 flex gap-3"><i data-lucide="check-circle" class="text-emerald-400 shrink-0"></i><div><h4 class="text-sm font-semibold">Sin Caducidad</h4><p class="text-xs text-slate-400">Tus anuncios no expiran de manera mensual.</p></div></div>
-                    <div class="p-3 bg-slate-800/40 rounded-xl border border-white/5 flex gap-3"><i data-lucide="check-circle" class="text-emerald-400 shrink-0"></i><div><h4 class="text-sm font-semibold">Enlace de Portafolio</h4><p class="text-xs text-slate-400">Botón visible integrado directo a tus proyectos.</p></div></div>
+                    <div class="p-3 bg-slate-800/40 rounded-xl border border-white/5 flex gap-3"><i data-lucide="briefcase" class="text-emerald-400 shrink-0"></i><div><h4 class="text-sm font-semibold">Enlace de Portafolio</h4><p class="text-xs text-slate-400">Botón visible integrado directo a tus proyectos.</p></div></div>
                 `;
             } else {
                 planBadge.textContent = "PLAN GRATUITO";
@@ -952,7 +955,7 @@
             const isFav = favoritos.includes(srv.id_servicio);
             const tieneOferta = srv.Precio_oferta && srv.Precio_oferta !== "";
 
-            // Ocultar botones de edición si el usuario forzó la vista de Explorador manualmente
+            // Ocultar de manera definitiva los botones de edición si se pulsa "Modo Explorador" globalmente
             const renderizarBotonesEdicion = esPanelDeControlPropio && currentViewMode === "VENDEDOR";
 
             div.innerHTML = `
@@ -987,10 +990,12 @@
                         </h3>
                         <p class="text-xs text-slate-400 mt-2 line-clamp-2 leading-relaxed">${srv.desc_breve}</p>
                         
+                        ${esPanelDeControlPropio ? `
                         <div class="mt-3 flex gap-4 text-[11px] text-slate-500 font-mono bg-[#0e1621]/40 p-2 rounded-lg border border-white/5">
                             <div><span class="text-slate-400 block font-sans">Fecha Inicio:</span>${srv.inicio}</div>
                             <div><span class="text-slate-400 block font-sans">Fecha Fin:</span>${esPro ? 'Infinity (PRO)' : srv.fin}</div>
                         </div>
+                        ` : ''}
                     </div>
 
                     <div class="flex items-center justify-between mt-4 pt-3 border-t border-white/5">
@@ -1059,9 +1064,6 @@
             return div;
         }
 
-        // ==========================================
-        // GESTIÓN DE EXPANSIONES DE TARJETAS
-        // ==========================================
         function toggleExpandCard(idCompleto) {
             const panel = document.getElementById(`extra-${idCompleto}`);
             const arrow = document.getElementById(`arrow-${idCompleto}`);
@@ -1195,7 +1197,7 @@
         }
 
         // ==========================================
-        // CAMBIO DE PESTAÑAS (NAVEGACIÓN MULTIPESTAÑA NUEVA)
+        // CAMBIO DE PESTAÑAS (NAVEGACIÓN)
         // ==========================================
         function switchTab(tab) {
             // Protección de Modos de Vista: Si está en modo explorador e intenta ingresar a perfil, se bloquea.
@@ -1206,17 +1208,6 @@
 
             currentActiveTab = tab;
             const tabs = ['catalogo', 'favoritos', 'perfil'];
-            
-            // Ocultar o mostrar dinámicamente los sliders promocionales solo en el catálogo
-            const slidersSection = document.getElementById('premium-sliders-section');
-            if (slidersSection) {
-                if (tab === 'catalogo') {
-                    slidersSection.classList.remove('hidden');
-                } else {
-                    slidersSection.classList.add('hidden');
-                }
-            }
-
             tabs.forEach(t => {
                 const section = document.getElementById(`view-${t}`);
                 if (section) section.classList.add('hidden');
@@ -1224,7 +1215,7 @@
                 const btnNav = document.getElementById(`btn-nav-${t}`);
                 const btnMob = document.getElementById(`btn-mob-${t}`);
                 if(btnNav) btnNav.className = "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2 text-slate-400 hover:text-white cursor-pointer";
-                if(btnMob) btnMob.className = "flex flex-col items-center gap-1 text-slate-400 text-xs cursor-pointer";
+                if(btnMob) btnMob.className = "flex flex-col items-center gap-1 text-slate-400 text-xs";
             });
 
             const activeSection = document.getElementById(`view-${tab}`);
@@ -1233,7 +1224,7 @@
             const activeNav = document.getElementById(`btn-nav-${tab}`);
             const activeMob = document.getElementById(`btn-mob-${tab}`);
             if(activeNav) activeNav.className = "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2 bg-[#2481cc] text-white cursor-pointer";
-            if(activeMob) activeMob.className = "flex flex-col items-center gap-1 text-[#2481cc] text-xs cursor-pointer";
+            if(activeMob) activeMob.className = "flex flex-col items-center gap-1 text-[#2481cc] text-xs";
 
             if (tab === 'catalogo') { catalogoPage = 1; renderCatalogo(); }
             if (tab === 'favoritos') { favoritosPage = 1; renderFavoritos(); }
