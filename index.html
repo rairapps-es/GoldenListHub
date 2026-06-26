@@ -32,9 +32,9 @@
         }
 
         @keyframes neonGlow {
-    0%, 100% { border-color: rgba(36, 129, 204, 0.3); box-shadow: 0 0 15px rgba(36, 129, 204, 0.15); }
-    50% { border-color: rgba(245, 158, 11, 0.6); box-shadow: 0 0 25px rgba(245, 158, 11, 0.3); }
-}
+            0%, 100% { border-color: rgba(36, 129, 204, 0.3); box-shadow: 0 0 15px rgba(36, 129, 204, 0.15); }
+            50% { border-color: rgba(245, 158, 11, 0.6); box-shadow: 0 0 25px rgba(245, 158, 11, 0.3); }
+        }
 
         .neon-card-pro {
             animation: neonGlow 4s infinite ease-in-out;
@@ -170,9 +170,29 @@
                         <div>
                             <div class="flex justify-between items-start">
                                 <h4 class="font-bold text-sm cyber-glow-text-cyan uppercase tracking-widest flex items-center gap-1">Plan PRO <i data-lucide="crown" class="w-3.5 h-3.5 text-cyan-400"></i></h4>
-                                <span class="text-xs font-mono cyber-glow-text-cyan font-bold">29.99€ / mes</span>
                             </div>
                             <p class="text-[11px] text-slate-300 mt-1">Control absoluto del mercado, efectos avanzados neón y máxima prioridad corporativa.</p>
+                            
+                            <div class="mt-3 space-y-2 bg-slate-950/50 p-2.5 rounded-lg border border-[#00f0ff]/20">
+                                <div class="flex items-center justify-between text-xs">
+                                    <span class="text-slate-300 font-medium">PRO 1 Mes (10% DTO)</span>
+                                    <span class="font-mono text-cyan-400 font-bold">135⭐ <span class="text-[10px] line-through text-slate-500">150⭐</span></span>
+                                </div>
+                                <button onclick="handlePlanAction('PRO_1M')" class="w-full py-1.5 bg-cyan-950/40 hover:bg-cyan-500 hover:text-black text-[10px] font-bold text-cyan-400 rounded border border-cyan-500/30 uppercase tracking-wider transition-all cursor-pointer">Contratar 1 Mes</button>
+
+                                <div class="flex items-center justify-between text-xs mt-1">
+                                    <span class="text-slate-300 font-medium">PRO 6 Meses (20% DTO)</span>
+                                    <span class="font-mono text-cyan-400 font-bold">800⭐ <span class="text-[10px] line-through text-slate-500">1000⭐</span></span>
+                                </div>
+                                <button onclick="handlePlanAction('PRO_6M')" class="w-full py-1.5 bg-cyan-950/40 hover:bg-cyan-500 hover:text-black text-[10px] font-bold text-cyan-400 rounded border border-cyan-500/30 uppercase tracking-wider transition-all cursor-pointer">Contratar 6 Meses</button>
+
+                                <div class="flex items-center justify-between text-xs mt-1">
+                                    <span class="text-slate-300 font-medium">PRO 1 Año (30% DTO)</span>
+                                    <span class="font-mono text-cyan-400 font-bold">1400⭐ <span class="text-[10px] line-through text-slate-500">2000⭐</span></span>
+                                </div>
+                                <button onclick="handlePlanAction('PRO_1Y')" class="w-full py-1.5 bg-cyan-950/40 hover:bg-cyan-500 hover:text-black text-[10px] font-bold text-cyan-400 rounded border border-cyan-500/30 uppercase tracking-wider transition-all cursor-pointer">Contratar 1 Año</button>
+                            </div>
+
                             <ul class="mt-3 space-y-1.5 text-[11px] text-slate-200">
                                 <li class="flex items-center gap-1.5"><i data-lucide="check-square" class="w-3.5 h-3.5 text-cyan-400"></i> Hasta 3 anuncios simultáneos</li>
                                 <li class="flex items-center gap-1.5"><i data-lucide="check-square" class="w-3.5 h-3.5 text-cyan-400"></i> Elige hasta 7 categorías por servicio</li>
@@ -403,7 +423,7 @@
                         <h2 class="text-xl font-bold mb-4 flex items-center gap-2"><i data-lucide="award" class="text-amber-500"></i> Tus Ventajas y Límites del Plan</h2>
                         <div id="benefits-box" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
                     </div>
-                    <div class="mt-6 p-4 bg-[#17212b]/50 rounded-xl border border-white/5 flex flex-col sm:flex-row justify-between items-center gap-3">
+                    <div id="container-mejorar-plan-btn" class="mt-6 p-4 bg-[#17212b]/50 rounded-xl border border-white/5 flex flex-col sm:flex-row justify-between items-center gap-3">
                         <p class="text-xs text-slate-400 text-center sm:text-left">¿Quieres expandir tus capabilities, colocar tus servicios en las primeras posiciones y gozar de los efectos Neón avanzados?</p>
                         <button id="main-mejorar-plan-btn" onclick="openPlanesModal()" class="px-4 py-2 bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 font-bold text-xs rounded-xl shadow-lg hover:scale-105 transition-all flex items-center gap-1 flex-shrink-0 cursor-pointer">
                             <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Mejorar Plan
@@ -424,76 +444,44 @@
                 <div id="grid-mis-anuncios" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
             </div>
 
-                <div id="rair-golden-alert" class="fixed top-4 left-1/2 -translate-x-1/2 z-[100] max-w-md w-[90%] glass p-3 rounded-xl shadow-2xl border border-yellow-500/30 flex items-center gap-3 transition-all duration-500 transform -translate-y-32 opacity-0">
-        <div class="relative shrink-0">
-            <img id="alert-avatar" src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=150&h=150&q=80" class="w-10 h-10 rounded-full border border-yellow-500 object-cover">
-            <div class="absolute -bottom-1 -right-1 bg-yellow-500 rounded-full p-0.5 text-slate-950">
-                <i data-lucide="bell" class="w-2.5 h-2.5 fill-current"></i>
+            <div id="rair-golden-alert" class="fixed top-4 left-1/2 -translate-x-1/2 z-[100] max-w-md w-[90%] glass p-3 rounded-xl shadow-2xl border border-yellow-500/30 flex items-center gap-3 transition-all duration-500 transform -translate-y-32 opacity-0">
+                <div class="relative shrink-0">
+                    <img id="alert-avatar" src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=150&h=150&q=80" class="w-10 h-10 rounded-full border border-yellow-500 object-cover">
+                    <div class="absolute -bottom-1 -right-1 bg-yellow-500 rounded-full p-0.5 text-slate-950">
+                        <i data-lucide="bell" class="w-2.5 h-2.5 fill-current"></i>
+                    </div>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-xs font-bold text-yellow-400 flex items-center gap-1" id="alert-author">Rair Golden</p>
+                    <p id="alert-text" class="text-[11px] text-slate-200 leading-tight mt-0.5"></p>
+                </div>
+                <button onclick="closeRairAlert()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-white/5 cursor-pointer">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
             </div>
-        </div>
-        <div class="flex-1 min-w-0">
-            <p class="text-xs font-bold text-yellow-400 flex items-center gap-1" id="alert-author">Rair Golden</p>
-            <p id="alert-text" class="text-[11px] text-slate-200 leading-tight mt-0.5"></p>
-        </div>
-        <button onclick="closeRairAlert()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-white/5 cursor-pointer">
-            <i data-lucide="x" class="w-4 h-4"></i>
-        </button>
-    </div>
 
-    <div id="sponsor-popup" class="fixed inset-0 z-[150] bg-black/70 backdrop-blur-md flex items-center justify-center p-4 transition-all duration-500 opacity-0 pointer-events-none">
-        <div class="max-w-md w-full glass rounded-2xl overflow-hidden shadow-2xl border border-purple-500/30 transform scale-95 transition-all duration-500 relative">
-            <div class="p-3 bg-gradient-to-r from-purple-900/40 to-indigo-900/40 border-b border-white/5 flex items-center justify-between">
-                <span class="text-xs font-bold tracking-wider text-purple-400 flex items-center gap-1.5">
-                    <i data-lucide="sparkles" class="w-3.5 h-3.5 animate-pulse"></i> ANUNCIO PATROCINADO
-                </span>
-                <span id="sponsor-timer" class="text-xs font-mono bg-black/40 px-2 py-0.5 rounded-md text-slate-300">15s</span>
+            <div id="sponsor-popup" class="fixed inset-0 z-[150] bg-black/70 backdrop-blur-md flex items-center justify-center p-4 transition-all duration-500 opacity-0 pointer-events-none">
+                <div class="max-w-md w-full glass rounded-2xl overflow-hidden shadow-2xl border border-purple-500/30 transform scale-95 transition-all duration-500 relative">
+                    <div class="p-3 bg-gradient-to-r from-purple-900/40 to-indigo-900/40 border-b border-white/5 flex items-center justify-between">
+                        <span class="text-xs font-bold tracking-wider text-purple-400 flex items-center gap-1.5">
+                            <i data-lucide="sparkles" class="w-3.5 h-3.5 animate-pulse"></i> ANUNCIO PATROCINADO
+                        </span>
+                        <span id="sponsor-timer" class="text-xs font-mono bg-black/40 px-2 py-0.5 rounded-md text-slate-300">15s</span>
+                    </div>
+                    <div id="sponsor-card-container" class="p-4 bg-[#0e1621]/40"></div>
+                    <div class="w-full h-1 bg-slate-800 relative">
+                        <div id="sponsor-progress-bar" class="h-full bg-gradient-to-r from-purple-500 to-indigo-500 w-full transition-all linear duration-1000"></div>
+                    </div>
+                </div>
             </div>
-            <div id="sponsor-card-container" class="p-4 bg-[#0e1621]/40"></div>
-            <div class="w-full h-1 bg-slate-800 relative">
-                <div id="sponsor-progress-bar" class="h-full bg-gradient-to-r from-purple-500 to-indigo-500 w-full transition-all linear duration-1000"></div>
-            </div>
-        </div>
-    </div>
             
             <div class="glass p-3 rounded-xl flex flex-wrap gap-2 items-center justify-between bg-yellow-500/5 border-yellow-500/10">
-            <span class="text-xs text-slate-400 font-medium">🛠️ Panel de Pruebas de desarrollo:</span>
-            <div class="flex gap-2">
-                <button onclick="triggerSponsorPopup()" class="px-3 py-1 bg-purple-600 hover:bg-purple-500 text-white text-xs rounded-lg font-bold transition-all cursor-pointer">Forzar Anuncio 15s</button>
-                <button onclick="triggerRairAlertManual()" class="px-3 py-1 bg-yellow-600 hover:bg-yellow-500 text-slate-950 text-xs rounded-lg font-bold transition-all cursor-pointer">Lanzar Alerta Rair</button>
+                <span class="text-xs text-slate-400 font-medium">🛠️ Panel de Pruebas de desarrollo:</span>
+                <div class="flex gap-2">
+                    <button onclick="triggerSponsorPopup()" class="px-3 py-1 bg-purple-600 hover:bg-purple-500 text-white text-xs rounded-lg font-bold transition-all cursor-pointer">Forzar Anuncio 15s</button>
+                    <button onclick="triggerRairAlertManual()" class="px-3 py-1 bg-yellow-600 hover:bg-yellow-500 text-slate-950 text-xs rounded-lg font-bold transition-all cursor-pointer">Lanzar Alerta Rair</button>
+                </div>
             </div>
-        </div>
-        
-            <div id="rair-golden-alert" class="fixed top-4 left-1/2 -translate-x-1/2 z-[100] max-w-md w-[90%] glass p-3 rounded-xl shadow-2xl border border-yellow-500/30 flex items-center gap-3 transition-all duration-500 transform -translate-y-32 opacity-0">
-        <div class="relative shrink-0">
-            <img id="alert-avatar" src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=150&h=150&q=80" class="w-10 h-10 rounded-full border border-yellow-500 object-cover">
-            <div class="absolute -bottom-1 -right-1 bg-yellow-500 rounded-full p-0.5 text-slate-950">
-                <i data-lucide="bell" class="w-2.5 h-2.5 fill-current"></i>
-            </div>
-        </div>
-        <div class="flex-1 min-w-0">
-            <p class="text-xs font-bold text-yellow-400 flex items-center gap-1" id="alert-author">Rair Golden</p>
-            <p id="alert-text" class="text-[11px] text-slate-200 leading-tight mt-0.5"></p>
-        </div>
-        <button onclick="closeRairAlert()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-white/5 cursor-pointer">
-            <i data-lucide="x" class="w-4 h-4"></i>
-        </button>
-    </div>
-
-    <div id="sponsor-popup" class="fixed inset-0 z-[150] bg-black/70 backdrop-blur-md flex items-center justify-center p-4 transition-all duration-500 opacity-0 pointer-events-none">
-        <div class="max-w-md w-full glass rounded-2xl overflow-hidden shadow-2xl border border-purple-500/30 transform scale-95 transition-all duration-500 relative">
-            <div class="p-3 bg-gradient-to-r from-purple-900/40 to-indigo-900/40 border-b border-white/5 flex items-center justify-between">
-                <span class="text-xs font-bold tracking-wider text-purple-400 flex items-center gap-1.5">
-                    <i data-lucide="sparkles" class="w-3.5 h-3.5 animate-pulse"></i> ANUNCIO PATROCINADO
-                </span>
-                <span id="sponsor-timer" class="text-xs font-mono bg-black/40 px-2 py-0.5 rounded-md text-slate-300">15s</span>
-            </div>
-            <div id="sponsor-card-container" class="p-4 bg-[#0e1621]/40"></div>
-            <div class="w-full h-1 bg-slate-800 relative">
-                <div id="sponsor-progress-bar" class="h-full bg-gradient-to-r from-purple-500 to-indigo-500 w-full transition-all linear duration-1000"></div>
-            </div>
-        </div>
-    </div>
-            
         </section>
     </main>
 
@@ -659,7 +647,7 @@
         let randomSessionServices = []; 
         let sponsorTimerInterval;
 
-                document.addEventListener("DOMContentLoaded", () => {
+        document.addEventListener("DOMContentLoaded", () => {
             if (window.Telegram && window.Telegram.WebApp) {
                 const tg = window.Telegram.WebApp;
                 tg.ready();
@@ -668,12 +656,10 @@
                 if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
                     CURRENT_TELEGRAM_USER_ID = String(tg.initDataUnsafe.user.id);
                     
-                    // CORRECCIÓN 1: Extraer el nombre real si no tiene alias público
                     const telegramName = tg.initDataUnsafe.user.username 
                         ? tg.initDataUnsafe.user.username 
                         : `${tg.initDataUnsafe.user.first_name} ${tg.initDataUnsafe.user.last_name || ''}`.trim();
                     
-                    // CORRECCIÓN 2: Generar un avatar por defecto basado en su nombre (ya que photo_url no viene en la WebApp)
                     const fallbackAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(telegramName)}&background=2481cc&color=fff`;
                     const userAvatar = tg.initDataUnsafe.user.photo_url || fallbackAvatar;
 
@@ -683,8 +669,8 @@
                     if (!userMatch) {
                         const nuevoUsuarioGratis = {
                             id_user: CURRENT_TELEGRAM_USER_ID,
-                            username: telegramName, // Guardamos el nombre correcto
-                            photo_url: userAvatar,  // Guardamos el avatar dinámico
+                            username: telegramName, 
+                            photo_url: userAvatar,  
                             plan: "GRATIS",
                             Inicio: new Date().toLocaleDateString('es-ES'),
                             Fin: "Indefinida",
@@ -694,10 +680,8 @@
                         localUsers.push(nuevoUsuarioGratis);
                         localStorage.setItem('users_db', JSON.stringify(localUsers));
                     } else {
-                        // Forzamos la actualización de los datos extraídos frescos de Telegram
                         userMatch.username = telegramName;
                         userMatch.photo_url = userAvatar;
-                        if (userMatch.plan !== "PRO") userMatch.plan = "GRATIS";
                         localStorage.setItem('users_db', JSON.stringify(localUsers));
                     }
                 }
@@ -982,15 +966,31 @@
             const gridMisAnuncios = document.getElementById('grid-mis-anuncios');
             gridMisAnuncios.innerHTML = "";
 
-            // Adaptación dinámica de botones principales si el usuario es PRO
+            // Adaptación dinámica de botones principales si el usuario es PRO o según requerimientos
             const mainActionBtn = document.getElementById('main-mejorar-plan-btn');
-            if (mainActionBtn) {
-                if (user.plan === "PRO") {
-                    mainActionBtn.innerHTML = `<i data-lucide="eye" class="w-3.5 h-3.5"></i> Ver datos de suscripción`;
-                    mainActionBtn.onclick = () => { switchTab('perfil'); };
-                } else {
+            const btnContainer = document.getElementById('container-mejorar-plan-btn');
+
+            if (user.plan === "PRO") {
+                if (mainActionBtn) {
+                    mainActionBtn.innerHTML = `<i data-lucide="eye" class="w-3.5 h-3.5"></i> Ver mis datos de suscripción`;
+                    mainActionBtn.onclick = () => { handlePlanAction('PRO'); };
+                }
+                // Si está en el listado de usuarios PRO, se oculta el contenedor/botón según especificación estricta
+                if (btnContainer) {
+                    btnContainer.classList.add('hidden');
+                }
+            } else {
+                if (mainActionBtn) {
                     mainActionBtn.innerHTML = `<i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Mejorar Plan`;
                     mainActionBtn.onclick = () => { openPlanesModal(); };
+                }
+                // Requerimiento: Mostrar el botón de mejorar suscripción SOLO en modo VENDEDOR siempre que no esté en listado de usuarios PRO
+                if (btnContainer) {
+                    if (currentViewMode === "VENDEDOR") {
+                        btnContainer.classList.remove('hidden');
+                    } else {
+                        btnContainer.classList.add('hidden');
+                    }
                 }
             }
 
@@ -1216,7 +1216,7 @@
                             </button>
                             <div class="grid grid-cols-2 gap-2">
                                 ${esPro ? `
-                                a href="${srv.url_portafolio}" target="_blank" class="py-2 bg-slate-800 hover:bg-slate-700 text-center text-slate-300 font-medium text-xs rounded-lg border border-white/5 transition-all flex items-center justify-center gap-1">
+                                <a href="${srv.url_portafolio}" target="_blank" class="py-2 bg-slate-800 hover:bg-slate-700 text-center text-slate-300 font-medium text-xs rounded-lg border border-white/5 transition-all flex items-center justify-center gap-1">
                                     <i data-lucide="briefcase" class="w-3 h-3 text-amber-400"></i> Ver Portafolio
                                 </a>
                                 ` : '<div class="py-2 text-slate-600 text-center text-[10px] bg-slate-900 rounded-lg flex items-center justify-center gap-1"><i data-lucide="eye-off" class="w-3 h-3"></i> Portafolio Lock</div>'}
@@ -1353,7 +1353,6 @@
             navigator.clipboard.writeText(textoFormateado).then(() => {
                 showToast("¡Datos de contratación copiados al portapapeles!", "success");
                 
-                // Abre el chat privado de Telegram con el enlace t.me integrado
                 const linkTelegram = `https://t.me/Airdayz?start=pedido_${srv.id_servicio}`;
                 if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openTelegramLink) {
                     window.Telegram.WebApp.openTelegramLink(linkTelegram);
@@ -1441,17 +1440,16 @@
             const currentUser = users.find(u => String(u.id_user) === CURRENT_TELEGRAM_USER_ID);
             const isUserPro = currentUser && currentUser.plan === "PRO";
 
-            // Si es PRO, forzar redirección directa al perfil según requerimientos
+            // CORRECCIÓN SOLICITADA: Si ya es PRO y pulsa "Ver mis datos de suscripción", NO se abre el modal redundante.
             if (isUserPro) {
                 closePlanesModal();
                 switchTab('perfil');
-                showToast("Redireccionado a tus datos de suscripción activa.", "info");
+                showToast("Visualizando tus datos de suscripción PRO activa.", "info");
                 return;
             }
 
             const bannerContainer = document.getElementById('fomo-banner-container');
             
-            // 1. Calcular Horario de España (Madrid / Central European Time)
             const options = { timeZone: 'Europe/Madrid', hour: 'numeric', hour12: false };
             const horaEspaña = parseInt(new Intl.DateTimeFormat('es-ES', options).format(new Date()));
 
@@ -1462,7 +1460,6 @@
                     </div>
                 `;
             } else {
-                // Mensaje aleatorio rotativo guardado en localStorage cada 24 horas para mantener consistencia
                 let storedFomo = localStorage.getItem('current_fomo_msg');
                 let storedFomoTime = localStorage.getItem('current_fomo_timestamp');
                 const ahora = Date.now();
@@ -1480,11 +1477,9 @@
                 `;
             }
 
-            // 2. Modificación de los textos y botones de planes según estatus actual del usuario
             const planes = ['GRATIS', 'GOLD', 'PRO'];
             planes.forEach(p => {
                 const btn = document.getElementById(`btn-action-plan-${p}`);
-                const card = document.getElementById(`modal-plan-card-${p}`);
                 
                 if (currentUser && currentUser.plan === p) {
                     btn.textContent = "Ver mis datos";
@@ -1519,7 +1514,7 @@
             const users = JSON.parse(localStorage.getItem('users_db')) || DEFAULT_USERS_DB;
             const currentUser = users.find(u => String(u.id_user) === CURRENT_TELEGRAM_USER_ID);
 
-            if (currentUser && currentUser.plan === planTarget) {
+            if (currentUser && currentUser.plan === "PRO" && (planTarget === 'PRO' || planTarget.startsWith('PRO_'))) {
                 closePlanesModal();
                 switchTab('perfil');
             } else {
