@@ -518,9 +518,9 @@
                 photo_url: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&w=150&h=150&q=80",
                 plan: "GRATIS",
                 Inicio: "24/06/2026",
-                Fin: "24/07/2026",
+                Fin: "Indefinida",
                 Estado: "ACTIVADO",
-                Duración: "Indefinida"
+                Duración: "Ilimitada"
             }
         ];
 
@@ -593,7 +593,7 @@
                 url_portafolio: "https://ListaGolden.com/portafolio/demo",
                 url_report: "https://ListaGolden.com/reportar/883102",
                 inicio: "24/06/2026",
-                fin: "24/07/2026",
+                fin: "Indefinida",
                 Precio: "15.00€",
                 Precio_oferta: "12.50€",
                 destacado: "false",
@@ -675,13 +675,18 @@
                             Inicio: new Date().toLocaleDateString('es-ES'),
                             Fin: "Indefinida",
                             Estado: "ACTIVADO",
-                            Duración: "Indefinida"
+                            Duración: "Ilimitada"
                         };
                         localUsers.push(nuevoUsuarioGratis);
                         localStorage.setItem('users_db', JSON.stringify(localUsers));
                     } else {
+                        // Sincroniza datos visuales manteniendo intacto su estatus PRO/Lista manual si aplica
                         userMatch.username = telegramName;
                         userMatch.photo_url = userAvatar;
+                        if(userMatch.plan === "GRATIS") {
+                            userMatch.Fin = "Indefinida";
+                            userMatch.Duración = "Ilimitada";
+                        }
                         localStorage.setItem('users_db', JSON.stringify(localUsers));
                     }
                 }
@@ -966,38 +971,30 @@
             const gridMisAnuncios = document.getElementById('grid-mis-anuncios');
             gridMisAnuncios.innerHTML = "";
 
-            // Adaptación dinámica de botones principales si el usuario es PRO o según requerimientos
             const mainActionBtn = document.getElementById('main-mejorar-plan-btn');
             const btnContainer = document.getElementById('container-mejorar-plan-btn');
 
             if (user.plan === "PRO") {
-    if (mainActionBtn) {
-        mainActionBtn.innerHTML = `<i data-lucide="crown" class="w-3.5 h-3.5"></i> Suscripción PRO Activa`;
-        mainActionBtn.className = "px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 text-slate-950 font-bold text-xs rounded-xl shadow-lg hover:scale-105 transition-all flex items-center gap-1 flex-shrink-0 cursor-pointer";
-        mainActionBtn.onclick = () => { showToast("¡Ya disfrutas del plan máximo!", "success"); };
-    }
-    if (btnContainer) {
-        // Se muestra si está en modo VENDEDOR independientemente de si es PRO o no
-        if (currentViewMode === "VENDEDOR") {
-            btnContainer.classList.remove('hidden');
-        } else {
-            btnContainer.classList.add('hidden');
-        }
-    }
-} else {
-    if (mainActionBtn) {
-        mainActionBtn.innerHTML = `<i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Mejorar Plan`;
-        mainActionBtn.className = "px-4 py-2 bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 font-bold text-xs rounded-xl shadow-lg hover:scale-105 transition-all flex items-center gap-1 flex-shrink-0 cursor-pointer";
-        mainActionBtn.onclick = () => { openPlanesModal(); };
-    }
-    if (btnContainer) {
-        if (currentViewMode === "VENDEDOR") {
-            btnContainer.classList.remove('hidden');
-        } else {
-            btnContainer.classList.add('hidden');
-        }
-    }
-}
+                if (mainActionBtn) {
+                    mainActionBtn.innerHTML = `<i data-lucide="eye" class="w-3.5 h-3.5"></i> Ver mis datos de suscripción`;
+                    mainActionBtn.onclick = () => { handlePlanAction('PRO'); };
+                }
+                if (btnContainer) {
+                    btnContainer.classList.add('hidden');
+                }
+            } else {
+                if (mainActionBtn) {
+                    mainActionBtn.innerHTML = `<i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Mejorar Plan`;
+                    mainActionBtn.onclick = () => { openPlanesModal(); };
+                }
+                if (btnContainer) {
+                    if (currentViewMode === "VENDEDOR") {
+                        btnContainer.classList.remove('hidden');
+                    } else {
+                        btnContainer.classList.add('hidden');
+                    }
+                }
+            }
 
             if(user.plan === "PRO") {
                 planBadge.textContent = "PLAN PRO ACTIVADO";
@@ -1349,6 +1346,7 @@
             }
         }
 
+        // Corrección estricta para evitar bloqueos del SDK y asegurar redirección nativa en WebApp
         function enviarPedidoTelegram(idServicio) {
             const services = JSON.parse(localStorage.getItem('services_db')) || [];
             const srv = services.find(s => s.id_servicio === idServicio);
@@ -1445,7 +1443,6 @@
             const currentUser = users.find(u => String(u.id_user) === CURRENT_TELEGRAM_USER_ID);
             const isUserPro = currentUser && currentUser.plan === "PRO";
 
-            // CORRECCIÓN SOLICITADA: Si ya es PRO y pulsa "Ver mis datos de suscripción", NO se abre el modal redundante.
             if (isUserPro) {
                 closePlanesModal();
                 switchTab('perfil');
