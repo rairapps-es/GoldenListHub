@@ -971,28 +971,33 @@
             const btnContainer = document.getElementById('container-mejorar-plan-btn');
 
             if (user.plan === "PRO") {
-                if (mainActionBtn) {
-                    mainActionBtn.innerHTML = `<i data-lucide="eye" class="w-3.5 h-3.5"></i> Ver mis datos de suscripción`;
-                    mainActionBtn.onclick = () => { handlePlanAction('PRO'); };
-                }
-                // Si está en el listado de usuarios PRO, se oculta el contenedor/botón según especificación estricta
-                if (btnContainer) {
-                    btnContainer.classList.add('hidden');
-                }
-            } else {
-                if (mainActionBtn) {
-                    mainActionBtn.innerHTML = `<i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Mejorar Plan`;
-                    mainActionBtn.onclick = () => { openPlanesModal(); };
-                }
-                // Requerimiento: Mostrar el botón de mejorar suscripción SOLO en modo VENDEDOR siempre que no esté en listado de usuarios PRO
-                if (btnContainer) {
-                    if (currentViewMode === "VENDEDOR") {
-                        btnContainer.classList.remove('hidden');
-                    } else {
-                        btnContainer.classList.add('hidden');
-                    }
-                }
-            }
+    if (mainActionBtn) {
+        mainActionBtn.innerHTML = `<i data-lucide="crown" class="w-3.5 h-3.5"></i> Suscripción PRO Activa`;
+        mainActionBtn.className = "px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 text-slate-950 font-bold text-xs rounded-xl shadow-lg hover:scale-105 transition-all flex items-center gap-1 flex-shrink-0 cursor-pointer";
+        mainActionBtn.onclick = () => { showToast("¡Ya disfrutas del plan máximo!", "success"); };
+    }
+    if (btnContainer) {
+        // Se muestra si está en modo VENDEDOR independientemente de si es PRO o no
+        if (currentViewMode === "VENDEDOR") {
+            btnContainer.classList.remove('hidden');
+        } else {
+            btnContainer.classList.add('hidden');
+        }
+    }
+} else {
+    if (mainActionBtn) {
+        mainActionBtn.innerHTML = `<i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Mejorar Plan`;
+        mainActionBtn.className = "px-4 py-2 bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 font-bold text-xs rounded-xl shadow-lg hover:scale-105 transition-all flex items-center gap-1 flex-shrink-0 cursor-pointer";
+        mainActionBtn.onclick = () => { openPlanesModal(); };
+    }
+    if (btnContainer) {
+        if (currentViewMode === "VENDEDOR") {
+            btnContainer.classList.remove('hidden');
+        } else {
+            btnContainer.classList.add('hidden');
+        }
+    }
+}
 
             if(user.plan === "PRO") {
                 planBadge.textContent = "PLAN PRO ACTIVADO";
