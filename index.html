@@ -333,6 +333,38 @@
                 </div>
                 <div id="grid-mis-anuncios" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
             </div>
+
+            <div id="rair-golden-alert" class="fixed top-4 left-1/2 -translate-x-1/2 z-[100] max-w-md w-[90%] glass p-3 rounded-xl shadow-2xl border border-yellow-500/30 flex items-center gap-3 transition-all duration-500 transform -translate-y-32 opacity-0">
+        <div class="relative shrink-0">
+            <img id="alert-avatar" src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=150&h=150&q=80" class="w-10 h-10 rounded-full border border-yellow-500 object-cover">
+            <div class="absolute -bottom-1 -right-1 bg-yellow-500 rounded-full p-0.5 text-slate-950">
+                <i data-lucide="bell" class="w-2.5 h-2.5 fill-current"></i>
+            </div>
+        </div>
+        <div class="flex-1 min-w-0">
+            <p class="text-xs font-bold text-yellow-400 flex items-center gap-1" id="alert-author">Rair Golden</p>
+            <p id="alert-text" class="text-[11px] text-slate-200 leading-tight mt-0.5"></p>
+        </div>
+        <button onclick="closeRairAlert()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-white/5 cursor-pointer">
+            <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+    </div>
+
+    <div id="sponsor-popup" class="fixed inset-0 z-[150] bg-black/70 backdrop-blur-md flex items-center justify-center p-4 transition-all duration-500 opacity-0 pointer-events-none">
+        <div class="max-w-md w-full glass rounded-2xl overflow-hidden shadow-2xl border border-purple-500/30 transform scale-95 transition-all duration-500 relative">
+            <div class="p-3 bg-gradient-to-r from-purple-900/40 to-indigo-900/40 border-b border-white/5 flex items-center justify-between">
+                <span class="text-xs font-bold tracking-wider text-purple-400 flex items-center gap-1.5">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5 animate-pulse"></i> ANUNCIO PATROCINADO
+                </span>
+                <span id="sponsor-timer" class="text-xs font-mono bg-black/40 px-2 py-0.5 rounded-md text-slate-300">15s</span>
+            </div>
+            <div id="sponsor-card-container" class="p-4 bg-[#0e1621]/40"></div>
+            <div class="w-full h-1 bg-slate-800 relative">
+                <div id="sponsor-progress-bar" class="h-full bg-gradient-to-r from-purple-500 to-indigo-500 w-full transition-all linear duration-1000"></div>
+            </div>
+        </div>
+    </div>
+            
         </section>
     </main>
 
