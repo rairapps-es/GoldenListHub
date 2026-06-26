@@ -490,7 +490,7 @@
         let randomSessionServices = []; 
         let sponsorTimerInterval;
 
-        document.addEventListener("DOMContentLoaded", () => {
+                document.addEventListener("DOMContentLoaded", () => {
             if (window.Telegram && window.Telegram.WebApp) {
                 const tg = window.Telegram.WebApp;
                 tg.ready();
@@ -499,14 +499,23 @@
                 if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
                     CURRENT_TELEGRAM_USER_ID = String(tg.initDataUnsafe.user.id);
                     
+                    // CORRECCIÓN 1: Extraer el nombre real si no tiene alias público
+                    const telegramName = tg.initDataUnsafe.user.username 
+                        ? tg.initDataUnsafe.user.username 
+                        : `${tg.initDataUnsafe.user.first_name} ${tg.initDataUnsafe.user.last_name || ''}`.trim();
+                    
+                    // CORRECCIÓN 2: Generar un avatar por defecto basado en su nombre (ya que photo_url no viene en la WebApp)
+                    const fallbackAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(telegramName)}&background=2481cc&color=fff`;
+                    const userAvatar = tg.initDataUnsafe.user.photo_url || fallbackAvatar;
+
                     let localUsers = JSON.parse(localStorage.getItem('users_db')) || DEFAULT_USERS_DB;
                     let userMatch = localUsers.find(u => String(u.id_user) === CURRENT_TELEGRAM_USER_ID);
                     
                     if (!userMatch) {
                         const nuevoUsuarioGratis = {
                             id_user: CURRENT_TELEGRAM_USER_ID,
-                            username: tg.initDataUnsafe.user.username || "Usuario",
-                            photo_url: tg.initDataUnsafe.user.photo_url || "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&w=150&h=150&q=80",
+                            username: telegramName, // Guardamos el nombre correcto
+                            photo_url: userAvatar,  // Guardamos el avatar dinámico
                             plan: "GRATIS",
                             Inicio: new Date().toLocaleDateString('es-ES'),
                             Fin: "Indefinida",
@@ -515,8 +524,11 @@
                         };
                         localUsers.push(nuevoUsuarioGratis);
                         localStorage.setItem('users_db', JSON.stringify(localUsers));
-                    } else if (userMatch.plan !== "PRO") {
-                        userMatch.plan = "GRATIS";
+                    } else {
+                        // Forzamos la actualización de los datos extraídos frescos de Telegram
+                        userMatch.username = telegramName;
+                        userMatch.photo_url = userAvatar;
+                        if (userMatch.plan !== "PRO") userMatch.plan = "GRATIS";
                         localStorage.setItem('users_db', JSON.stringify(localUsers));
                     }
                 }
