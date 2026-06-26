@@ -581,9 +581,9 @@
         });
 
         function resetAppStorage() {
-            if(confirm("¿Estás seguro de que deseas actualizar la versión? Se restablecerá el catálogo de datos local.")) {
+            if(confirm("¿Estás seguro de que deseas actualizar la versión?")) {
                 localStorage.clear();
-                showToast("Catálogo actualizado. Reiniciando módulos...", "success");
+                showToast("Aplicación actualizada. Reiniciando módulos...", "success");
                 setTimeout(() => {
                     window.location.reload();
                 }, 1000);
