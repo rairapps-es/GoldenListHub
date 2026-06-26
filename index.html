@@ -383,7 +383,7 @@
                 título: "Canción personalizada por IA",
                 url_img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80",
                 desc_breve: "Servicios musicales de altísima calidad con algoritmos neuronales avanzados.",
-                desc_larga: "Hazte con tu canción totalmente personalizada estructurada por Inteligencia Artificial al mejor precio de mercado. Ideal para regalos de cumpleaños, aniversarios, intros de streams o proyectos publicitarios corporativos. Entrega ultra rápida.",
+                desc_larga: "Hazte con tu canción totalmente personalizada estructurada por Inteligencia Artificial al mejor precio de mercado. Ideal para regalos de cumpleaños, anniversarios, intros de streams o proyectos publicitarios corporativos. Entrega ultra rápida.",
                 url_buy: "https://ListaGolden.com/comprar/618192",
                 url_portafolio: "https://ListaGolden.com/portafolio/airdayz",
                 url_report: "https://ListaGolden.com/reportar/618192",
@@ -1172,6 +1172,14 @@
             const textoFormateado = `⚡ *SOLICITUD DE CONTRATACIÓN*\n📦 *SERVICIO:*\n• ID: ${srv.id_servicio}\n• Título: ${srv.título}\n• Precio: ${srv.Precio_oferta || srv.Precio}`;
             navigator.clipboard.writeText(textoFormateado).then(() => {
                 showToast("¡Datos de contratación copiados al portapapeles!", "success");
+                
+                // Abre el chat privado de Telegram con el enlace t.me integrado
+                const linkTelegram = `https://t.me/listagolden?start=pedido_${srv.id_servicio}`;
+                if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openTelegramLink) {
+                    window.Telegram.WebApp.openTelegramLink(linkTelegram);
+                } else {
+                    window.open(linkTelegram, '_blank');
+                }
             });
         }
 
