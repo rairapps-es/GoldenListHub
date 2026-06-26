@@ -1174,7 +1174,7 @@
                 showToast("¡Datos de contratación copiados al portapapeles!", "success");
                 
                 // Abre el chat privado de Telegram con el enlace t.me integrado
-                const linkTelegram = `https://t.me/listagolden?start=pedido_${srv.id_servicio}`;
+                const linkTelegram = `https://t.me/Airdayz?start=pedido_${srv.id_servicio}`;
                 if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openTelegramLink) {
                     window.Telegram.WebApp.openTelegramLink(linkTelegram);
                 } else {
