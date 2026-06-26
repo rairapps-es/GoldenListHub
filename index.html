@@ -161,14 +161,6 @@
     </header>
 
     <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 space-y-10">
-        <div class="glass p-3 rounded-xl flex flex-wrap gap-2 items-center justify-between bg-yellow-500/5 border-yellow-500/10">
-            <span class="text-xs text-slate-400 font-medium">🛠️ Panel de Pruebas de desarrollo:</span>
-            <div class="flex gap-2">
-                <button onclick="triggerSponsorPopup()" class="px-3 py-1 bg-purple-600 hover:bg-purple-500 text-white text-xs rounded-lg font-bold transition-all cursor-pointer">Forzar Anuncio 15s</button>
-                <button onclick="triggerRairAlertManual()" class="px-3 py-1 bg-yellow-600 hover:bg-yellow-500 text-slate-950 text-xs rounded-lg font-bold transition-all cursor-pointer">Lanzar Alerta Rair</button>
-            </div>
-        </div>
-        
         <section id="view-catalogo" class="space-y-6">
             <div class="glass p-4 rounded-2xl space-y-4 shadow-xl">
                 <div class="flex flex-col md:flex-row gap-3">
@@ -334,6 +326,14 @@
                 <div id="grid-mis-anuncios" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
             </div>
 
+            <div class="glass p-3 rounded-xl flex flex-wrap gap-2 items-center justify-between bg-yellow-500/5 border-yellow-500/10">
+            <span class="text-xs text-slate-400 font-medium">🛠️ Panel de Pruebas de desarrollo:</span>
+            <div class="flex gap-2">
+                <button onclick="triggerSponsorPopup()" class="px-3 py-1 bg-purple-600 hover:bg-purple-500 text-white text-xs rounded-lg font-bold transition-all cursor-pointer">Forzar Anuncio 15s</button>
+                <button onclick="triggerRairAlertManual()" class="px-3 py-1 bg-yellow-600 hover:bg-yellow-500 text-slate-950 text-xs rounded-lg font-bold transition-all cursor-pointer">Lanzar Alerta Rair</button>
+            </div>
+        </div>
+        
             <div id="rair-golden-alert" class="fixed top-4 left-1/2 -translate-x-1/2 z-[100] max-w-md w-[90%] glass p-3 rounded-xl shadow-2xl border border-yellow-500/30 flex items-center gap-3 transition-all duration-500 transform -translate-y-32 opacity-0">
         <div class="relative shrink-0">
             <img id="alert-avatar" src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=150&h=150&q=80" class="w-10 h-10 rounded-full border border-yellow-500 object-cover">
