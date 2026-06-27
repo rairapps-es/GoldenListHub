@@ -1345,81 +1345,51 @@
             }
         }
 
-// Corrección estricta: Extrae datos del servicio, ID y nombre de Telegram, copia y abre chat privado
 function enviarPedidoTelegram(idServicio) {
-    // 1. Forzar conversión a String por si los IDs se guardan como números
+    // 1. Extraer el servicio (forzando String por seguridad)
     const services = JSON.parse(localStorage.getItem('services_db')) || [];
     const srv = services.find(s => String(s.id_servicio) === String(idServicio));
     
-    // Si no encuentra el servicio, lanzamos alerta visual para depurar
-    if (!srv) {
-        showToast("Error: No se encontraron los datos del servicio", "error");
-        console.error("ID buscado:", idServicio, "en la DB:", services);
-        return;
-    }
+    if (!srv) return showToast("Error: No se encontraron los datos del servicio.", "error");
 
-    // 2. Extracción limpia de datos del usuario
-    let telegramUserId = "No disponible";
-    let telegramUserName = "Usuario";
+    // 2. Obtener los datos del usuario actual (adaptado a tus variables globales de Telegram)
+    let tgId = "No disponible";
+    let tgUser = "Usuario";
 
     if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe?.user) {
-        const tgUser = window.Telegram.WebApp.initDataUnsafe.user;
-        telegramUserId = String(tgUser.id);
-        telegramUserName = tgUser.username ? `@${tgUser.username}` : `${tgUser.first_name} ${tgUser.last_name || ''}`.trim();
-    } else if (typeof CURRENT_TELEGRAM_USER_ID !== 'undefined' && CURRENT_TELEGRAM_USER_ID) {
-        telegramUserId = String(CURRENT_TELEGRAM_USER_ID);
-        const users = JSON.parse(localStorage.getItem('users_db')) || [];
-        const localMatch = users.find(u => String(u.id_user) === String(telegramUserId));
-        if (localMatch) {
-            telegramUserName = localMatch.username?.startsWith('@') ? localMatch.username : `@${localMatch.username}`;
-        }
+        const tgData = window.Telegram.WebApp.initDataUnsafe.user;
+        tgId = tgData.id;
+        tgUser = tgData.username ? `@${tgData.username}` : `${tgData.first_name}`.trim();
+    } else if (typeof usuarioActual !== 'undefined') { 
+        // Fallback usando el objeto 'usuarioActual' que usas en tus otras funciones
+        tgId = usuarioActual.id_tg || "No disponible";
+        tgUser = usuarioActual.username_tg || "Usuario";
     }
 
-    // 3. Construcción del bloque de texto garantizando fallbacks para campos vacíos
-    const precioFinal = srv.Precio_oferta || srv.Precio || "Consultar";
-    const metodoPago = srv.met_pago || "No especificado";
-    const vendedor = srv.vendedor || "Sin_Proveedor";
-    const titulo = srv.título || "Servicio sin título";
+    // 3. Construir el mensaje extrayendo los datos de forma manual e idéntica a tus formularios
+    const mensajeTelegram = `⚡ NUEVO PEDIDO DESDE GOLDENSERVICES\n\n` +
+                            `👤 DATOS DEL COMPRADOR:\n` +
+                            `• Nombre / Alias: ${tgUser}\n` +
+                            `• ID Telegram: ${tgId}\n\n` +
+                            `📦 DETALLES DEL SERVICIO:\n` +
+                            `• ID Servicio: ${srv.id_servicio}\n` +
+                            `• Título: ${srv.título || srv.titulo}\n` + 
+                            `• Proveedor: @${srv.vendedor}\n` +
+                            `• Precio: ${srv.Precio_oferta || srv.Precio || 'Consultar'}\n` +
+                            `• Método de Pago: ${srv.met_pago || 'No especificado'}\n\n` +
+                            `💬 Mensaje: Hola @${srv.vendedor}, quiero contratar este servicio. Adjunto mis datos extraídos para procesar el pedido de forma manual.`;
 
-    const textoFormateado = `⚡ *NUEVO PEDIDO DESDE GOLDENSERVICES*\n\n` +
-                            `👤 *DATOS DEL COMPRADOR:*\n` +
-                            `• *Nombre / Alias:* ${telegramUserName}\n` +
-                            `• *ID Telegram:* \`${telegramUserId}\`\n\n` +
-                            `📦 *DETALLES DEL SERVICIO:*\n` +
-                            `• *ID Servicio:* \`${srv.id_servicio}\`\n` +
-                            `• *Título:* ${titulo}\n` +
-                            `• *Proveedor:* @${vendedor}\n` +
-                            `• *Precio:* ${precioFinal}\n` +
-                            `• *Método de Pago:* ${metodoPago}\n\n` +
-                            `💬 *Mensaje:* Hola @${vendedor}, quiero contratar este servicio. Adjunto mis datos extraídos para procesar el pedido manualmente.`;
-    
-    const linkTelegram = `https://t.me/Airdayz?start=pedido_${srv.id_servicio}`;
+    // 4. Inyectar el texto directamente en la URL de redirección (Método infalible)
+    // Cambia 'Airdayz' por tu variable global si lo prefieres, igual que con MI_USUARIO_TELEGRAM
+    const urlTelegram = `https://t.me/Airdayz?text=${encodeURIComponent(mensajeTelegram)}`;
 
-    // 4. Copiar al portapapeles de manera síncrona antes de abrir el enlace
-    navigator.clipboard.writeText(textoFormateado)
-        .then(() => {
-            showToast("¡Datos de pedido copiados! Pégalos al abrir el chat.", "success");
-            
-            // Un pequeño delay de 150ms asegura que el portapapeles se asiente en iOS/Android antes de que la WebApp pierda el foco
-            setTimeout(() => {
-                if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openTelegramLink) {
-                    window.Telegram.WebApp.openTelegramLink(linkTelegram);
-                } else {
-                    window.open(linkTelegram, '_blank');
-                }
-            }, 150);
-        })
-        .catch(err => {
-            console.error("Fallo crítico al escribir en el portapapeles: ", err);
-            // Si el portapapeles del dispositivo bloquea la acción, abrimos el link igualmente
-            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openTelegramLink) {
-                window.Telegram.WebApp.openTelegramLink(linkTelegram);
-            } else {
-                window.open(linkTelegram, '_blank');
-            }
-        });
+    // 5. Ejecutar la apertura nativa
+    if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openTelegramLink) {
+        window.Telegram.WebApp.openTelegramLink(urlTelegram);
+    } else {
+        window.open(urlTelegram, '_blank');
+    }
 }
-
         // Estructura idéntica: Extrae datos del servicio, ID y nombre del usuario que reporta, copia y abre chat de soporte
 function enviarReporteTelegram(idServicio) {
     const services = JSON.parse(localStorage.getItem('services_db')) || [];
