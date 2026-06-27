@@ -1345,64 +1345,79 @@
             }
         }
 
-        // Corrección estricta: Abre chat privado con parámetros integrados y respeta entorno WebApp nativo
-        // Corrección estricta: Extrae datos del servicio, ID y nombre de Telegram, copia y abre chat privado
+// Corrección estricta: Extrae datos del servicio, ID y nombre de Telegram, copia y abre chat privado
 function enviarPedidoTelegram(idServicio) {
+    // 1. Forzar conversión a String por si los IDs se guardan como números
     const services = JSON.parse(localStorage.getItem('services_db')) || [];
-    const srv = services.find(s => s.id_servicio === idServicio);
-    if (!srv) return;
+    const srv = services.find(s => String(s.id_servicio) === String(idServicio));
+    
+    // Si no encuentra el servicio, lanzamos alerta visual para depurar
+    if (!srv) {
+        showToast("Error: No se encontraron los datos del servicio", "error");
+        console.error("ID buscado:", idServicio, "en la DB:", services);
+        return;
+    }
 
-    // 1. Obtener de manera dinámica el ID y Nombre de Telegram del usuario actual en la sesión
-    let telegramUserId = CURRENT_TELEGRAM_USER_ID || "No disponible";
+    // 2. Extracción limpia de datos del usuario
+    let telegramUserId = "No disponible";
     let telegramUserName = "Usuario";
 
     if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe?.user) {
         const tgUser = window.Telegram.WebApp.initDataUnsafe.user;
         telegramUserId = String(tgUser.id);
         telegramUserName = tgUser.username ? `@${tgUser.username}` : `${tgUser.first_name} ${tgUser.last_name || ''}`.trim();
-    } else {
-        // Fallback al almacenamiento local si la WebApp no se ejecuta dentro de Telegram en ese instante
+    } else if (typeof CURRENT_TELEGRAM_USER_ID !== 'undefined' && CURRENT_TELEGRAM_USER_ID) {
+        telegramUserId = String(CURRENT_TELEGRAM_USER_ID);
         const users = JSON.parse(localStorage.getItem('users_db')) || [];
-        const localMatch = users.find(u => String(u.id_user) === String(CURRENT_TELEGRAM_USER_ID));
+        const localMatch = users.find(u => String(u.id_user) === String(telegramUserId));
         if (localMatch) {
-            telegramUserId = localMatch.id_user;
-            telegramUserName = localMatch.username.startsWith('@') ? localMatch.username : `@${localMatch.username}`;
+            telegramUserName = localMatch.username?.startsWith('@') ? localMatch.username : `@${localMatch.username}`;
         }
     }
 
-    // 2. Construir la plantilla con la extracción manual completa de datos
+    // 3. Construcción del bloque de texto garantizando fallbacks para campos vacíos
+    const precioFinal = srv.Precio_oferta || srv.Precio || "Consultar";
+    const metodoPago = srv.met_pago || "No especificado";
+    const vendedor = srv.vendedor || "Sin_Proveedor";
+    const titulo = srv.título || "Servicio sin título";
+
     const textoFormateado = `⚡ *NUEVO PEDIDO DESDE GOLDENSERVICES*\n\n` +
                             `👤 *DATOS DEL COMPRADOR:*\n` +
                             `• *Nombre / Alias:* ${telegramUserName}\n` +
                             `• *ID Telegram:* \`${telegramUserId}\`\n\n` +
                             `📦 *DETALLES DEL SERVICIO:*\n` +
                             `• *ID Servicio:* \`${srv.id_servicio}\`\n` +
-                            `• *Título:* ${srv.título}\n` +
-                            `• *Proveedor:* @${srv.vendedor}\n` +
-                            `• *Precio:* ${srv.Precio_oferta || srv.Precio}\n` +
-                            `• *Método de Pago:* ${srv.met_pago}\n\n` +
-                            `💬 *Mensaje:* Hola @${srv.vendedor}, quiero contratar este servicio. Adjunto mis datos extraídos para procesar el pedido manualmente.`;
+                            `• *Título:* ${titulo}\n` +
+                            `• *Proveedor:* @${vendedor}\n` +
+                            `• *Precio:* ${precioFinal}\n` +
+                            `• *Método de Pago:* ${metodoPago}\n\n` +
+                            `💬 *Mensaje:* Hola @${vendedor}, quiero contratar este servicio. Adjunto mis datos extraídos para procesar el pedido manualmente.`;
     
-    // 3. Mecanismo de copia automatizada en portapapeles y redirección nativa deep-linking
     const linkTelegram = `https://t.me/Airdayz?start=pedido_${srv.id_servicio}`;
 
-    navigator.clipboard.writeText(textoFormateado).then(() => {
-        showToast("¡Datos de pedido copiados! Pégalos al abrir el chat.", "success");
-        
-        if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openTelegramLink) {
-            window.Telegram.WebApp.openTelegramLink(linkTelegram);
-        } else {
-            window.open(linkTelegram, '_blank');
-        }
-    }).catch(err => {
-        console.error("Error al acceder al portapapeles: ", err);
-        // Fallback de contingencia si el navegador bloquea permisos de portapapeles temporalmente
-        if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openTelegramLink) {
-            window.Telegram.WebApp.openTelegramLink(linkTelegram);
-        } else {
-            window.open(linkTelegram, '_blank');
-        }
-    });
+    // 4. Copiar al portapapeles de manera síncrona antes de abrir el enlace
+    navigator.clipboard.writeText(textoFormateado)
+        .then(() => {
+            showToast("¡Datos de pedido copiados! Pégalos al abrir el chat.", "success");
+            
+            // Un pequeño delay de 150ms asegura que el portapapeles se asiente en iOS/Android antes de que la WebApp pierda el foco
+            setTimeout(() => {
+                if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openTelegramLink) {
+                    window.Telegram.WebApp.openTelegramLink(linkTelegram);
+                } else {
+                    window.open(linkTelegram, '_blank');
+                }
+            }, 150);
+        })
+        .catch(err => {
+            console.error("Fallo crítico al escribir en el portapapeles: ", err);
+            // Si el portapapeles del dispositivo bloquea la acción, abrimos el link igualmente
+            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openTelegramLink) {
+                window.Telegram.WebApp.openTelegramLink(linkTelegram);
+            } else {
+                window.open(linkTelegram, '_blank');
+            }
+        });
 }
 
         // Estructura idéntica: Extrae datos del servicio, ID y nombre del usuario que reporta, copia y abre chat de soporte
