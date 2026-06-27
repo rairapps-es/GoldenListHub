@@ -1392,60 +1392,58 @@ function enviarPedidoTelegram(idServicio) {
 }
         // Estructura idéntica: Extrae datos del servicio, ID y nombre del usuario que reporta, copia y abre chat de soporte
 function enviarReporteTelegram(idServicio) {
+    // 1. Extraer el servicio (forzando String por seguridad si los IDs son numéricos)
     const services = JSON.parse(localStorage.getItem('services_db')) || [];
-    const srv = services.find(s => s.id_servicio === idServicio);
-    if (!srv) return;
+    const srv = services.find(s => String(s.id_servicio) === String(idServicio));
+    
+    if (!srv) return showToast("Error: No se encontraron los datos del servicio para reportar.", "error");
 
-    // 1. Obtener de manera dinámica el ID y Nombre de Telegram del usuario que emite el reporte
-    let telegramUserId = CURRENT_TELEGRAM_USER_ID || "No disponible";
-    let telegramUserName = "Usuario";
+    // 2. Obtener los datos del usuario actual (adaptado a tus objetos globales y nativos)
+    let tgId = "No disponible";
+    let tgUser = "Usuario";
 
     if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe?.user) {
-        const tgUser = window.Telegram.WebApp.initDataUnsafe.user;
-        telegramUserId = String(tgUser.id);
-        telegramUserName = tgUser.username ? `@${tgUser.username}` : `${tgUser.first_name} ${tgUser.last_name || ''}`.trim();
-    } else {
-        // Fallback al almacenamiento local si está fuera del entorno nativo
+        const tgData = window.Telegram.WebApp.initDataUnsafe.user;
+        tgId = tgData.id;
+        tgUser = tgData.username ? `@${tgData.username}` : `${tgData.first_name}`.trim();
+    } else if (typeof usuarioActual !== 'undefined') {
+        // Fallback usando tu objeto global de sesión de tus otras funciones
+        tgId = usuarioActual.id_tg || "No disponible";
+        tgUser = usuarioActual.username_tg || "Usuario";
+    } else if (typeof CURRENT_TELEGRAM_USER_ID !== 'undefined' && CURRENT_TELEGRAM_USER_ID) {
+        tgId = String(CURRENT_TELEGRAM_USER_ID);
         const users = JSON.parse(localStorage.getItem('users_db')) || [];
-        const localMatch = users.find(u => String(u.id_user) === String(CURRENT_TELEGRAM_USER_ID));
+        const localMatch = users.find(u => String(u.id_user) === String(tgId));
         if (localMatch) {
-            telegramUserId = localMatch.id_user;
-            telegramUserName = localMatch.username.startsWith('@') ? localMatch.username : `@${localMatch.username}`;
+            tgUser = localMatch.username?.startsWith('@') ? localMatch.username : `@${localMatch.username}`;
         }
     }
 
-    // 2. Construir la plantilla detallada del reporte de alerta
-    const textoReporte = `🚨 *REPORTE DE ALERTA EMITIDO*\n\n` +
-                         `👤 *REPORTADO POR:*\n` +
-                         `• *Usuario:* ${telegramUserName}\n` +
-                         `• *ID Telegram:* \`${telegramUserId}\`\n\n` +
-                         `📦 *DATOS DEL SERVICIO AFECTADO:*\n` +
-                         `• *ID Servicio:* \`${srv.id_servicio}\`\n` +
-                         `• *Título:* ${srv.título}\n` +
-                         `• *Proveedor:* @${srv.vendedor}\n` +
-                         `• *Precio:* ${srv.Precio_oferta || srv.Precio}\n\n` +
-                         `⚠️ *Razón del Reporte:* Hola soporte, quiero reportar una incidencia o comportamiento inusual con este servicio. Adjunto la ficha técnica copiada automáticamente desde la Mini App.`;
+    // 3. Construir el mensaje de reporte con fallbacks para evitar valores vacíos o nulos
+    const titulo = srv.título || srv.titulo || "Servicio sin título";
+    const vendedor = srv.vendedor || "Sin_Proveedor";
+    const precioFinal = srv.Precio_oferta || srv.Precio || "Consultar";
 
-    // 3. Copia automatizada y redirección nativa con deep-linking (?start=reporte_...)
-    const linkSoporte = `https://t.me/Airdayz?start=reporte_${srv.id_servicio}`;
+    const textoReporte = `🚨 REPORTE DE ALERTA EMITIDO\n\n` +
+                         `👤 REPORTADO POR:\n` +
+                         `• Usuario: ${tgUser}\n` +
+                         `• ID Telegram: ${tgId}\n\n` +
+                         `📦 DATOS DEL SERVICIO AFECTADO:\n` +
+                         `• ID Servicio: ${srv.id_servicio}\n` +
+                         `• Título: ${titulo}\n` +
+                         `• Proveedor: @${vendedor}\n` +
+                         `• Precio: ${precioFinal}\n\n` +
+                         `⚠️ Razón del Reporte: Hola soporte, quiero reportar una incidencia o comportamiento inusual con este servicio. Adjunto la ficha técnica extraída automáticamente desde la Mini App.`;
 
-    navigator.clipboard.writeText(textoReporte).then(() => {
-        showToast("¡Datos de reporte copiados! Pégalos al abrir el chat de soporte.", "warning");
-        
-        if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openTelegramLink) {
-            window.Telegram.WebApp.openTelegramLink(linkSoporte);
-        } else {
-            window.open(linkSoporte, '_blank');
-        }
-    }).catch(err => {
-        console.error("Error al acceder al portapapeles: ", err);
-        // Fallback directo por si fallan permisos del portapapeles
-        if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openTelegramLink) {
-            window.Telegram.WebApp.openTelegramLink(linkSoporte);
-        } else {
-            window.open(linkSoporte, '_blank');
-        }
-    });
+    // 4. Inyectar el texto directamente usando ?text= en lugar de ?start=
+    const urlTelegram = `https://t.me/Airdayz?text=${encodeURIComponent(textoReporte)}`;
+
+    // 5. Redirección e inicio del flujo nativo en el chat
+    if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openTelegramLink) {
+        window.Telegram.WebApp.openTelegramLink(urlTelegram);
+    } else {
+        window.open(urlTelegram, '_blank');
+    }
 }
 
         function switchTab(tab) {
